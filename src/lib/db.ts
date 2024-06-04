@@ -2,14 +2,6 @@ let request: IDBOpenDBRequest;
 let db: IDBDatabase;
 let version = 1;
 
-export interface Plant {
-  id: string;
-  name: string;
-  registered_at: Date;
-  last_watered_at: Date;
-  period: number;
-}
-
 export enum Stores {
   Plants = "plants",
 }

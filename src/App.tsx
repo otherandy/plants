@@ -1,12 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import {
-  Plant,
-  Stores,
-  addData,
-  getData,
-  deleteData,
-  updateData,
-} from "@/lib/db";
+import { Stores, addData, getData, deleteData, updateData } from "@/lib/db";
+import Plant from "@/types/plant";
 import "./App.css";
 
 interface Timers {
