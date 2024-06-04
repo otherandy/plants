@@ -40,6 +40,11 @@ function App() {
     updateTimers();
   };
 
+  useEffect(() => {
+    handleGetPlants();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const logError = (err: unknown) => {
     if (err instanceof Error) console.error(err.message);
     else console.error("Something went wrong.");
