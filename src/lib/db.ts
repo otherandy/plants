@@ -60,6 +60,7 @@ export function getData<T>(storeName: Stores): Promise<T[]> {
     request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
+      if (request.readyState !== "done") return;
       console.log("request.onsuccess - getData");
       db = request.result;
       const tx = db.transaction(storeName, "readonly");
