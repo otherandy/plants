@@ -55,7 +55,7 @@ function PlantCard({
       const remaining = next.getTime() - new Date().getTime();
       const time = Math.floor(remaining / 1000);
       const normalized = (time / period) * 100;
-      const days = Math.ceil(time / (24 * 60 * 60));
+      const days = time / (24 * 60 * 60);
       setTimer({ time, normalized, days });
     }, 1000);
 
@@ -98,7 +98,7 @@ function PlantCard({
                 handleUpdate(plant);
               }}
             />
-            <div className="my-4 leading-10">
+            <div className="mt-4 mb-2 leading-10">
               <p>
                 Last watered{" "}
                 <DatePicker
@@ -134,7 +134,12 @@ function PlantCard({
                 days
               </p>
               <p>
-                Water {timer.days == 1 ? "tomorrow" : `in ${timer.days} days`}
+                Water{" "}
+                {timer.days == 1
+                  ? "tomorrow"
+                  : timer.days < 1
+                    ? "today"
+                    : `in ${Math.ceil(timer.days)} days`}
               </p>
             </div>
             <Progress value={timer.normalized} />
