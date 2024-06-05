@@ -91,7 +91,13 @@ function PlantCard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Photo plant={plant} handleUpdate={handleUpdate} />
+            <Photo
+              photo={plant.photo}
+              handleUpdate={(photo: string) => {
+                plant.photo = photo;
+                handleUpdate(plant);
+              }}
+            />
             <div className="my-4 leading-10">
               <p>
                 Last watered{" "}
