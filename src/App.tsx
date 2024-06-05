@@ -1,37 +1,17 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Stores, addData, getData, deleteData, updateData } from "@/lib/db";
 import Plant from "@/types/plant";
+import PlantCard from "@/components/PlantCard";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 import "./App.css";
-
-interface Timers {
-  [id: string]: number;
-}
 
 function App() {
   const [plants, setPlants] = useState<Plant[]>([]);
-  const [timers, setTimers] = useState<Timers>({} as Timers);
-
-  const updateTimers = useCallback(() => {
-    const timers = plants!.reduce((acc, cur) => {
-      const diff = new Date().getTime() - cur.last_watered_at.getTime();
-      const seconds = Math.floor(diff / 1000);
-      return { ...acc, [cur.id]: seconds };
-    }, {});
-    setTimers(timers);
-  }, [plants]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateTimers();
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [updateTimers]);
 
   const handleGetPlants = async () => {
     const plants = await getData<Plant>(Stores.Plants);
     setPlants(plants);
-    updateTimers();
   };
 
   useEffect(() => {
@@ -56,7 +36,7 @@ function App() {
     addData(Stores.Plants, plant).then(handleGetPlants).catch(logError);
   };
 
-  const handleRemovePlant = async (id: string) => {
+  const handleDelete = async (id: string) => {
     deleteData(Stores.Plants, id).then(handleGetPlants).catch(logError);
   };
 
@@ -70,23 +50,33 @@ function App() {
   };
 
   return (
-    <div>
+    <>
+      <nav className="justify-end flex p-4">
+        <Button onClick={handleGetPlants} variant="ghost">
+          Refresh
+        </Button>
+      </nav>
       <main className="container">
-        {plants.map((plant: Plant) => (
-          <div key={plant.id}>
-            <h2>{plant.name}</h2>
-            <p>{plant.registered_at.toString()}</p>
-            <p>{plant.last_watered_at.toString()}</p>
-            <p>{timers[plant.id]}</p>
-            <button onClick={() => handleWater(plant)}>Water</button>
-            <br />
-            <button onClick={() => handleRemovePlant(plant.id)}>x</button>
-          </div>
-        ))}
-        <button onClick={handleAddPlant}>+</button>
-        <button onClick={handleGetPlants}>Refresh</button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {plants.map((plant: Plant) => (
+            <PlantCard
+              key={plant.id}
+              plant={plant}
+              handleWater={handleWater}
+              handleDelete={handleDelete}
+            />
+          ))}
+          <Button
+            onClick={handleAddPlant}
+            variant="outline"
+            size="icon"
+            className="aspect-square h-full w-full"
+          >
+            <Plus />
+          </Button>
+        </div>
       </main>
-    </div>
+    </>
   );
 }
 
