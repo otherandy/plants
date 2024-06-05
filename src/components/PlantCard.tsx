@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -105,7 +107,7 @@ function PlantCard({
             handleUpdate(plant);
           }}
         />
-        <div className="mt-4 mb-2 leading-10">
+        <div className="my-4 flex-col flex gap-2">
           <p>
             Last watered{" "}
             <DatePicker
@@ -140,6 +142,18 @@ function PlantCard({
             </Select>{" "}
             days
           </p>
+          <div className="grid w-full gap-1.5 pt-2">
+            <Label htmlFor={plant.id + "c"}>Comments</Label>
+            <Textarea
+              id={plant.id + "c"}
+              placeholder="Type additional info here."
+              value={plant.comments}
+              onChange={(e) => {
+                plant.comments = e.target.value;
+                handleUpdate(plant);
+              }}
+            />
+          </div>
         </div>
         <Progress value={timer.normalized} />
       </CardContent>

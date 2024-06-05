@@ -5,6 +5,7 @@ export default interface Plant {
   last_watered_at: Date;
   period: number;
   photo?: string;
+  comments?: string;
 }
 
 export function createPlant(): Plant {
