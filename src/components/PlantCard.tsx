@@ -13,18 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from "@/components/ui/sheet";
 import { Delete, Droplet, Edit, Settings } from "lucide-react";
 
 interface Timer {
@@ -153,23 +161,34 @@ function PlantCard({
         >
           <Droplet />
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="outline" size="icon">
-              <Settings />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem disabled>
-              <Edit className="mr-2 h-4 w-4" />
-              <span>Edit</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
-              <Delete className="mr-2 h-4 w-4" />
-              <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Sheet>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button variant="outline" size="icon">
+                <Settings />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <SheetTrigger disabled>
+                <DropdownMenuItem disabled>
+                  <Edit className="mr-2 h-4 w-4" />
+                  <span>Edit</span>
+                </DropdownMenuItem>
+              </SheetTrigger>
+              <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
+                <Delete className="mr-2 h-4 w-4" />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Edit</SheetTitle>
+            </SheetHeader>
+            <div></div>
+            <SheetFooter></SheetFooter>
+          </SheetContent>
+        </Sheet>
       </CardFooter>
     </Card>
   );
