@@ -58,7 +58,15 @@ function PlantCard({
               />
             </CardTitle>
             <CardDescription>
-              {/* Registered at {plant.registered_at.toLocaleString()} */}
+              <input
+                value={plant.description}
+                placeholder="Description"
+                className="placeholder:italic"
+                onChange={(e) => {
+                  plant.description = e.target.value;
+                  handleUpdate(plant);
+                }}
+              />
             </CardDescription>
           </CardHeader>
           <CardContent>
