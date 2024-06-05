@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -27,14 +28,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
-  SheetTrigger,
+  // SheetTrigger,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Delete, Droplet, Edit, Settings } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { Delete, Droplet, /* Edit, */ Settings } from "lucide-react";
 
 interface Timer {
   time: number;
@@ -180,12 +180,12 @@ function PlantCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <SheetTrigger disabled>
+              {/* <SheetTrigger disabled>
                 <DropdownMenuItem disabled>
                   <Edit className="mr-2 h-4 w-4" />
                   <span>Edit</span>
                 </DropdownMenuItem>
-              </SheetTrigger>
+              </SheetTrigger> */}
               <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
                 <Delete className="mr-2 h-4 w-4" />
                 <span>Delete</span>
