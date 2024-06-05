@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Plant from "@/types/plant";
 import Photo from "@/components/Photo";
+import DatePicker from "@/components/DatePicker";
 import {
   Card,
   CardHeader,
@@ -80,17 +81,26 @@ function PlantCard({
           </CardHeader>
           <CardContent>
             <Photo plant={plant} handleUpdate={handleUpdate} />
-            <div className="my-4 leading-8">
-              <p>Last watered at {plant.last_watered_at.toLocaleString()}</p>
+            <div className="my-4 leading-10">
               <p>
-                Water every
+                Last watered{" "}
+                <DatePicker
+                  date={plant.last_watered_at}
+                  handleUpdate={(date: Date) => {
+                    plant.last_watered_at = date;
+                    handleUpdate(plant);
+                  }}
+                />
+              </p>
+              <p>
+                Water every{" "}
                 <Select
                   onValueChange={(value) => {
                     plant.period = parseInt(value);
                     handleUpdate(plant);
                   }}
                 >
-                  <SelectTrigger className="mx-2 w-[4rem] inline-flex">
+                  <SelectTrigger className="w-[4rem] inline-flex">
                     <SelectValue placeholder={plant.period} />
                   </SelectTrigger>
                   <SelectContent>
@@ -103,7 +113,7 @@ function PlantCard({
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
+                </Select>{" "}
                 days
               </p>
             </div>
