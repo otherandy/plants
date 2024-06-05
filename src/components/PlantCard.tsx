@@ -34,6 +34,7 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet";
 import { Delete, Droplet, Edit, Settings } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 interface Timer {
   time: number;
@@ -139,28 +140,38 @@ function PlantCard({
             </Select>{" "}
             days
           </p>
-          <p>
-            Water{" "}
-            {timer.days == 1
-              ? "tomorrow"
-              : timer.days < 1
-                ? "today"
-                : `in ${Math.ceil(timer.days)} days`}
-          </p>
         </div>
         <Progress value={timer.normalized} />
       </CardContent>
       <CardFooter className="justify-between">
-        <Button
-          onClick={() => {
-            plant.last_watered_at = new Date();
-            handleUpdate(plant);
-          }}
-          variant="default"
-          size="icon"
-        >
-          <Droplet />
-        </Button>
+        <div className="items-center flex gap-2">
+          <Button
+            onClick={() => {
+              plant.last_watered_at = new Date();
+              handleUpdate(plant);
+            }}
+            variant="default"
+            size="icon"
+          >
+            <Droplet />
+          </Button>
+          <Badge
+            variant={
+              timer.days < 0.5
+                ? "destructive"
+                : timer.days <= 1
+                  ? "default"
+                  : "secondary"
+            }
+          >
+            Water{" "}
+            {timer.days < 0.5
+              ? "today"
+              : timer.days <= 1
+                ? "tomorrow"
+                : `in ${Math.ceil(timer.days)} days`}
+          </Badge>
+        </div>
         <Sheet>
           <DropdownMenu>
             <DropdownMenuTrigger>
