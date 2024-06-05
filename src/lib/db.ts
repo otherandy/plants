@@ -18,6 +18,7 @@ export function initDb(): Promise<boolean> {
     };
 
     request.onsuccess = () => {
+      if (request.readyState !== "done") return;
       db = request.result;
       version = db.version;
       resolve(true);
