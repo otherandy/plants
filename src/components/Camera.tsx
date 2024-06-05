@@ -8,6 +8,7 @@ import { CameraIcon } from "lucide-react";
 const constraints = {
   width: 960,
   height: 720,
+  facingMode: "environment",
 };
 
 export default function Camera({
@@ -28,12 +29,13 @@ export default function Camera({
         <Webcam
           ref={webcamRef}
           disablePictureInPicture
-          width={960}
-          height={720}
-          className="rounded-md object-cover"
+          width={constraints.width}
+          height={constraints.height}
+          className="rounded-md"
           screenshotFormat="image/jpeg"
           screenshotQuality={0.8}
           videoConstraints={constraints}
+          style={{ objectFit: "cover" }}
         />
       </AspectRatio>
       <Button onClick={capture}>
