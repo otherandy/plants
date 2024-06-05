@@ -27,6 +27,12 @@ import {
 } from "@/components/ui/select";
 import { Droplet } from "lucide-react";
 
+interface Timer {
+  time: number;
+  normalized: number;
+  days: number;
+}
+
 function PlantCard({
   plant,
   handleUpdate,
@@ -36,16 +42,21 @@ function PlantCard({
   handleUpdate: (plant: Plant) => void;
   handleDelete: (id: string) => void;
 }) {
-  const [timer, setTimer] = useState<number>(0);
+  const [timer, setTimer] = useState<Timer>({
+    time: 0,
+    normalized: 0,
+    days: 0,
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
       const period = plant.period * 24 * 60 * 60;
       const next = new Date(plant.last_watered_at.getTime() + period * 1000);
       const remaining = next.getTime() - new Date().getTime();
-      const timer = Math.floor(remaining / 1000);
-      const normalized = (timer / period) * 100;
-      setTimer(normalized);
+      const time = Math.floor(remaining / 1000);
+      const normalized = (time / period) * 100;
+      const days = Math.ceil(time / (24 * 60 * 60));
+      setTimer({ time, normalized, days });
     }, 1000);
 
     return () => clearInterval(interval);
@@ -116,8 +127,11 @@ function PlantCard({
                 </Select>{" "}
                 days
               </p>
+              <p>
+                Water {timer.days == 1 ? "tomorrow" : `in ${timer.days} days`}
+              </p>
             </div>
-            <Progress value={timer} />
+            <Progress value={timer.normalized} />
           </CardContent>
           <CardFooter>
             <Button
