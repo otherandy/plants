@@ -20,11 +20,11 @@ import Plant from "@/types/plant";
 
 function PlantCard({
   plant,
-  handleWater,
+  handleUpdate,
   handleDelete,
 }: {
   plant: Plant;
-  handleWater: (plant: Plant) => void;
+  handleUpdate: (plant: Plant) => void;
   handleDelete: (id: string) => void;
 }) {
   const [timer, setTimer] = useState<number>(0);
@@ -47,7 +47,16 @@ function PlantCard({
       <ContextMenuTrigger>
         <Card className="aspect-square">
           <CardHeader>
-            <CardTitle>{plant.name}</CardTitle>
+            <CardTitle>
+              <input
+                value={plant.name}
+                placeholder="Name"
+                onChange={(e) => {
+                  plant.name = e.target.value;
+                  handleUpdate(plant);
+                }}
+              />
+            </CardTitle>
             <CardDescription>
               {/* Registered at {plant.registered_at.toLocaleString()} */}
             </CardDescription>
@@ -60,7 +69,10 @@ function PlantCard({
           </CardContent>
           <CardFooter>
             <Button
-              onClick={() => handleWater(plant)}
+              onClick={() => {
+                plant.last_watered_at = new Date();
+                handleUpdate(plant);
+              }}
               variant="default"
               size="icon"
             >

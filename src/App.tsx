@@ -33,12 +33,14 @@ function App() {
   };
 
   const handleUpdate = async (plant: Plant) => {
-    updateData(Stores.Plants, plant).then(handleGetAll).catch(logError);
-  };
-
-  const handleWater = async (plant: Plant) => {
-    plant.last_watered_at = new Date();
-    handleUpdate(plant);
+    updateData(Stores.Plants, plant)
+      .then(() => {
+        const updatedPlants = plants.map((p) =>
+          p.id === plant.id ? plant : p,
+        );
+        setPlants(updatedPlants);
+      })
+      .catch(logError);
   };
 
   return (
@@ -54,7 +56,7 @@ function App() {
             <PlantCard
               key={plant.id}
               plant={plant}
-              handleWater={handleWater}
+              handleUpdate={handleUpdate}
               handleDelete={handleDelete}
             />
           ))}
