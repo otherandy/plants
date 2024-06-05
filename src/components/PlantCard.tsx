@@ -59,6 +59,7 @@ function PlantCard({
               <input
                 value={plant.name}
                 placeholder="Name"
+                className="w-full"
                 onChange={(e) => {
                   plant.name = e.target.value;
                   handleUpdate(plant);
@@ -69,7 +70,7 @@ function PlantCard({
               <input
                 value={plant.description}
                 placeholder="Description"
-                className="placeholder:italic"
+                className="placeholder:italic w-full"
                 onChange={(e) => {
                   plant.description = e.target.value;
                   handleUpdate(plant);
