@@ -2,7 +2,13 @@ import Camera from "@/components/Camera";
 import { DrawerDialog } from "@/components/DrawerDialog";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { CameraIcon } from "lucide-react";
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+} from "@/components/ui/context-menu";
+import { CameraIcon, Trash } from "lucide-react";
 
 export default function Photo({
   photo,
@@ -14,7 +20,17 @@ export default function Photo({
   return (
     <AspectRatio ratio={4 / 3} className="flex">
       {photo ? (
-        <img src={photo} alt="Plant" className="object-cover rounded-md" />
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <img src={photo} alt="Plant" className="object-cover rounded-md" />
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem onClick={() => handleUpdate("")}>
+              <Trash className="mr-2 h-4 w-4" />
+              <span>Delete Photo</span>
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       ) : (
         <DrawerDialog
           title="Take a photo"
