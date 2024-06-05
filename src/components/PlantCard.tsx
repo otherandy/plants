@@ -96,7 +96,10 @@ function PlantCard({
                 </SelectTrigger>
                 <SelectContent>
                   {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
-                    <SelectItem key={days} value={days.toString()}>
+                    <SelectItem
+                      key={plant.id + "sp" + days}
+                      value={days.toString()}
+                    >
                       {days}
                     </SelectItem>
                   ))}
