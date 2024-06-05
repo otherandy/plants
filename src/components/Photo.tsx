@@ -1,7 +1,8 @@
 import Plant from "@/types/plant";
 import Camera from "@/components/Camera";
-import { Button } from "@/components/ui/button";
 import { DrawerDialog } from "@/components/DrawerDialog";
+import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { CameraIcon } from "lucide-react";
 
 export default function Photo({
@@ -12,7 +13,7 @@ export default function Photo({
   handleUpdate: (plant: Plant) => void;
 }) {
   return (
-    <>
+    <AspectRatio ratio={4 / 3}>
       {plant.photo ? (
         <img
           src={plant.photo}
@@ -21,6 +22,7 @@ export default function Photo({
         />
       ) : (
         <DrawerDialog
+          title="Take a photo"
           trigger={
             <Button variant="outline" className="aspect-square h-full w-full">
               <CameraIcon />
@@ -35,6 +37,6 @@ export default function Photo({
           />
         </DrawerDialog>
       )}
-    </>
+    </AspectRatio>
   );
 }

@@ -24,11 +24,13 @@ export default function Camera({
 
   return (
     <div className="mt-auto flex flex-col gap-2 px-4 pt-2">
-      <AspectRatio ratio={4 / 3} className="bg-muted">
+      <AspectRatio ratio={4 / 3} className="bg-muted rounded-md">
         <Webcam
           ref={webcamRef}
           disablePictureInPicture
-          className="rounded-lg"
+          height={720}
+          width={960}
+          className="rounded-md"
           screenshotFormat="image/jpeg"
           videoConstraints={constraints}
         />

@@ -24,7 +24,6 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Droplet } from "lucide-react";
 
 function PlantCard({
@@ -80,9 +79,7 @@ function PlantCard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <AspectRatio ratio={4 / 3}>
-              <Photo plant={plant} handleUpdate={handleUpdate} />
-            </AspectRatio>
+            <Photo plant={plant} handleUpdate={handleUpdate} />
             <div className="my-4 leading-8">
               <p>Last watered at {plant.last_watered_at.toLocaleString()}</p>
               <p>
