@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Plant from "@/types/plant";
+import Photo from "@/components/Photo";
 import {
   Card,
   CardHeader,
@@ -16,7 +17,6 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -24,6 +24,7 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Droplet } from "lucide-react";
 
 function PlantCard({
@@ -79,34 +80,36 @@ function PlantCard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Skeleton className="aspect-square mb-2" />
-            <p className="leading-7">
-              Last watered at {plant.last_watered_at.toLocaleString()}
-            </p>
-            <p className="leading-7 mb-2">
-              Water every
-              <Select
-                onValueChange={(value) => {
-                  plant.period = parseInt(value);
-                  handleUpdate(plant);
-                }}
-              >
-                <SelectTrigger className="mx-2 w-[4rem] inline-flex">
-                  <SelectValue placeholder={plant.period} />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
-                    <SelectItem
-                      key={plant.id + "sp" + days}
-                      value={days.toString()}
-                    >
-                      {days}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              days
-            </p>
+            <AspectRatio ratio={4 / 3}>
+              <Photo plant={plant} handleUpdate={handleUpdate} />
+            </AspectRatio>
+            <div className="my-4 leading-8">
+              <p>Last watered at {plant.last_watered_at.toLocaleString()}</p>
+              <p>
+                Water every
+                <Select
+                  onValueChange={(value) => {
+                    plant.period = parseInt(value);
+                    handleUpdate(plant);
+                  }}
+                >
+                  <SelectTrigger className="mx-2 w-[4rem] inline-flex">
+                    <SelectValue placeholder={plant.period} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                      <SelectItem
+                        key={plant.id + "sp" + days}
+                        value={days.toString()}
+                      >
+                        {days}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                days
+              </p>
+            </div>
             <Progress value={timer} />
           </CardContent>
           <CardFooter>
