@@ -13,13 +13,11 @@ export function initDb(): Promise<boolean> {
     request.onupgradeneeded = () => {
       db = request.result;
       if (!db.objectStoreNames.contains(Stores.Plants)) {
-        console.log("request.onupgradeneeded - initDB");
         db.createObjectStore(Stores.Plants, { keyPath: "id" });
       }
     };
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - initDB", version);
       db = request.result;
       version = db.version;
       resolve(true);
@@ -39,7 +37,6 @@ export function addData<T>(
     request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - addData", data);
       db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
@@ -61,7 +58,6 @@ export function getData<T>(storeName: Stores): Promise<T[]> {
 
     request.onsuccess = () => {
       if (request.readyState !== "done") return;
-      console.log("request.onsuccess - getData");
       db = request.result;
       const tx = db.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);
@@ -78,7 +74,6 @@ export function deleteData(storeName: Stores, key: string): Promise<boolean> {
     request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - deleteData", key);
       db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
@@ -103,7 +98,6 @@ export function updateData<T>(
     request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      console.log("request.onsuccess - updateData", data);
       db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
