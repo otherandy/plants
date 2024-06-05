@@ -13,11 +13,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -25,7 +25,7 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
-import { Droplet } from "lucide-react";
+import { Delete, Droplet, Edit, Settings } from "lucide-react";
 
 interface Timer {
   time: number;
@@ -63,108 +63,115 @@ function PlantCard({
   }, [plant]);
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <Card className="aspect-square">
-          <CardHeader>
-            <CardTitle>
-              <input
-                value={plant.name}
-                placeholder="Name"
-                className="w-full"
-                onChange={(e) => {
-                  plant.name = e.target.value;
-                  handleUpdate(plant);
-                }}
-              />
-            </CardTitle>
-            <CardDescription>
-              <input
-                value={plant.description}
-                placeholder="Description"
-                className="placeholder:italic w-full"
-                onChange={(e) => {
-                  plant.description = e.target.value;
-                  handleUpdate(plant);
-                }}
-              />
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Photo
-              photo={plant.photo}
-              handleUpdate={(photo: string) => {
-                plant.photo = photo;
+    <Card className="aspect-square">
+      <CardHeader>
+        <CardTitle>
+          <input
+            value={plant.name}
+            placeholder="Name"
+            className="w-full"
+            onChange={(e) => {
+              plant.name = e.target.value;
+              handleUpdate(plant);
+            }}
+          />
+        </CardTitle>
+        <CardDescription>
+          <input
+            value={plant.description}
+            placeholder="Description"
+            className="placeholder:italic w-full"
+            onChange={(e) => {
+              plant.description = e.target.value;
+              handleUpdate(plant);
+            }}
+          />
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Photo
+          photo={plant.photo}
+          handleUpdate={(photo: string) => {
+            plant.photo = photo;
+            handleUpdate(plant);
+          }}
+        />
+        <div className="mt-4 mb-2 leading-10">
+          <p>
+            Last watered{" "}
+            <DatePicker
+              date={plant.last_watered_at}
+              handleUpdate={(date: Date) => {
+                plant.last_watered_at = date;
                 handleUpdate(plant);
               }}
             />
-            <div className="mt-4 mb-2 leading-10">
-              <p>
-                Last watered{" "}
-                <DatePicker
-                  date={plant.last_watered_at}
-                  handleUpdate={(date: Date) => {
-                    plant.last_watered_at = date;
-                    handleUpdate(plant);
-                  }}
-                />
-              </p>
-              <p>
-                Water every{" "}
-                <Select
-                  onValueChange={(value) => {
-                    plant.period = parseInt(value);
-                    handleUpdate(plant);
-                  }}
-                >
-                  <SelectTrigger className="w-[4rem] inline-flex">
-                    <SelectValue placeholder={plant.period} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
-                      <SelectItem
-                        key={plant.id + "sp" + days}
-                        value={days.toString()}
-                      >
-                        {days}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>{" "}
-                days
-              </p>
-              <p>
-                Water{" "}
-                {timer.days == 1
-                  ? "tomorrow"
-                  : timer.days < 1
-                    ? "today"
-                    : `in ${Math.ceil(timer.days)} days`}
-              </p>
-            </div>
-            <Progress value={timer.normalized} />
-          </CardContent>
-          <CardFooter>
-            <Button
-              onClick={() => {
-                plant.last_watered_at = new Date();
+          </p>
+          <p>
+            Water every{" "}
+            <Select
+              onValueChange={(value) => {
+                plant.period = parseInt(value);
                 handleUpdate(plant);
               }}
-              variant="default"
-              size="icon"
             >
-              <Droplet />
+              <SelectTrigger className="w-[4rem] inline-flex">
+                <SelectValue placeholder={plant.period} />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                  <SelectItem
+                    key={plant.id + "sp" + days}
+                    value={days.toString()}
+                  >
+                    {days}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>{" "}
+            days
+          </p>
+          <p>
+            Water{" "}
+            {timer.days == 1
+              ? "tomorrow"
+              : timer.days < 1
+                ? "today"
+                : `in ${Math.ceil(timer.days)} days`}
+          </p>
+        </div>
+        <Progress value={timer.normalized} />
+      </CardContent>
+      <CardFooter className="justify-between">
+        <Button
+          onClick={() => {
+            plant.last_watered_at = new Date();
+            handleUpdate(plant);
+          }}
+          variant="default"
+          size="icon"
+        >
+          <Droplet />
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="outline" size="icon">
+              <Settings />
             </Button>
-          </CardFooter>
-        </Card>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem disabled>Edit</ContextMenuItem>
-        <ContextMenuItem onClick={() => handleDelete(plant.id)}>
-          Delete
-        </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem disabled>
+              <Edit className="mr-2 h-4 w-4" />
+              <span>Edit</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
+              <Delete className="mr-2 h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardFooter>
+    </Card>
   );
 }
 
