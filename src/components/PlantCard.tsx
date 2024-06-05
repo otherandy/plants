@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import Plant from "@/types/plant";
 import {
   Card,
   CardHeader,
@@ -14,9 +16,8 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Droplet } from "lucide-react";
-import Plant from "@/types/plant";
 
 function PlantCard({
   plant,
@@ -70,9 +71,11 @@ function PlantCard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>Last watered at {plant.last_watered_at.toLocaleString()}</p>
-            <p>Period: {plant.period} days</p>
-            <br />
+            <Skeleton className="aspect-square mb-2" />
+            <p className="leading-7">
+              Last watered at {plant.last_watered_at.toLocaleString()}
+            </p>
+            <p className="leading-7 mb-2">Period: {plant.period} days</p>
             <Progress value={timer} />
           </CardContent>
           <CardFooter>
