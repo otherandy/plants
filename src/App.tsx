@@ -64,7 +64,7 @@ function App() {
             onClick={handleCreate}
             variant="outline"
             size="icon"
-            className="aspect-square h-full w-full"
+            className="aspect-square h-fit w-full"
           >
             <Plus />
           </Button>
