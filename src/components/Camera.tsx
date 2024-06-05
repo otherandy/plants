@@ -28,10 +28,11 @@ export default function Camera({
         <Webcam
           ref={webcamRef}
           disablePictureInPicture
-          height={720}
           width={960}
+          height={720}
           className="rounded-md"
           screenshotFormat="image/jpeg"
+          screenshotQuality={0.8}
           videoConstraints={constraints}
         />
       </AspectRatio>

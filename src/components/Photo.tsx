@@ -13,12 +13,12 @@ export default function Photo({
   handleUpdate: (plant: Plant) => void;
 }) {
   return (
-    <AspectRatio ratio={4 / 3}>
+    <AspectRatio ratio={4 / 3} className="flex">
       {plant.photo ? (
         <img
           src={plant.photo}
           alt="Plant"
-          className="object-scale-down rounded-md"
+          className="object-cover rounded-md"
         />
       ) : (
         <DrawerDialog
