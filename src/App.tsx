@@ -9,13 +9,13 @@ import "./App.css";
 function App() {
   const [plants, setPlants] = useState<Plant[]>([]);
 
-  const handleGetPlants = async () => {
+  const handleGetAll = async () => {
     const plants = await getData<Plant>(Stores.Plants);
     setPlants(plants);
   };
 
   useEffect(() => {
-    handleGetPlants();
+    handleGetAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -24,27 +24,27 @@ function App() {
     else console.error("Something went wrong.");
   };
 
-  const handleAddPlant = async () => {
-    addData(Stores.Plants, createPlant()).then(handleGetPlants).catch(logError);
+  const handleCreate = async () => {
+    addData(Stores.Plants, createPlant()).then(handleGetAll).catch(logError);
   };
 
   const handleDelete = async (id: string) => {
-    deleteData(Stores.Plants, id).then(handleGetPlants).catch(logError);
+    deleteData(Stores.Plants, id).then(handleGetAll).catch(logError);
   };
 
-  const handleUpdatePlant = async (plant: Plant) => {
-    updateData(Stores.Plants, plant).then(handleGetPlants).catch(logError);
+  const handleUpdate = async (plant: Plant) => {
+    updateData(Stores.Plants, plant).then(handleGetAll).catch(logError);
   };
 
   const handleWater = async (plant: Plant) => {
     plant.last_watered_at = new Date();
-    handleUpdatePlant(plant);
+    handleUpdate(plant);
   };
 
   return (
     <>
       <nav className="justify-end flex p-4">
-        <Button onClick={handleGetPlants} variant="ghost">
+        <Button onClick={handleGetAll} variant="ghost">
           Refresh
         </Button>
       </nav>
@@ -59,7 +59,7 @@ function App() {
             />
           ))}
           <Button
-            onClick={handleAddPlant}
+            onClick={handleCreate}
             variant="outline"
             size="icon"
             className="aspect-square h-full w-full"
