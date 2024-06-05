@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Stores, addData, getData, deleteData, updateData } from "@/lib/db";
-import Plant from "@/types/plant";
+import Plant, { createPlant } from "@/types/plant";
 import PlantCard from "@/components/PlantCard";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -25,15 +25,7 @@ function App() {
   };
 
   const handleAddPlant = async () => {
-    const plant: Plant = {
-      id: Date.now().toString(),
-      name: "Plant",
-      registered_at: new Date(),
-      last_watered_at: new Date(),
-      period: 7,
-    };
-
-    addData(Stores.Plants, plant).then(handleGetPlants).catch(logError);
+    addData(Stores.Plants, createPlant()).then(handleGetPlants).catch(logError);
   };
 
   const handleDelete = async (id: string) => {
