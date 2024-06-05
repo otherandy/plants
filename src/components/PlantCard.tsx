@@ -17,6 +17,13 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
 import { Droplet } from "lucide-react";
 
 function PlantCard({
@@ -75,7 +82,27 @@ function PlantCard({
             <p className="leading-7">
               Last watered at {plant.last_watered_at.toLocaleString()}
             </p>
-            <p className="leading-7 mb-2">Period: {plant.period} days</p>
+            <p className="leading-7 mb-2">
+              Water every
+              <Select
+                onValueChange={(value) => {
+                  plant.period = parseInt(value);
+                  handleUpdate(plant);
+                }}
+              >
+                <SelectTrigger className="mx-2 w-[4rem] inline-flex">
+                  <SelectValue placeholder={plant.period} />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                    <SelectItem key={days} value={days.toString()}>
+                      {days}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              days
+            </p>
             <Progress value={timer} />
           </CardContent>
           <CardFooter>
