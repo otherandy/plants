@@ -30,7 +30,7 @@ export default function Camera({
           disablePictureInPicture
           width={960}
           height={720}
-          className="rounded-md"
+          className="rounded-md object-cover"
           screenshotFormat="image/jpeg"
           screenshotQuality={0.8}
           videoConstraints={constraints}
