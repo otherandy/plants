@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { initDb } from "./lib/db.ts";
-import App from "./App.tsx";
+import { initDb } from "@/lib/db.ts";
+import App from "@/App.tsx";
 import "@fontsource-variable/inter";
 import "./index.css";
 

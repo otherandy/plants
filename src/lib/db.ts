@@ -1,5 +1,3 @@
-let request: IDBOpenDBRequest;
-let db: IDBDatabase;
 let version = 1;
 
 export enum Stores {
@@ -8,18 +6,17 @@ export enum Stores {
 
 export function initDb(): Promise<boolean> {
   return new Promise((resolve) => {
-    request = indexedDB.open(Stores.Plants, version);
+    const request = indexedDB.open(Stores.Plants, version);
 
     request.onupgradeneeded = () => {
-      db = request.result;
+      const db = request.result;
       if (!db.objectStoreNames.contains(Stores.Plants)) {
         db.createObjectStore(Stores.Plants, { keyPath: "id" });
       }
     };
 
     request.onsuccess = () => {
-      if (request.readyState !== "done") return;
-      db = request.result;
+      const db = request.result;
       version = db.version;
       resolve(true);
     };
@@ -35,10 +32,10 @@ export function addData<T>(
   data: T,
 ): Promise<T | string | null> {
   return new Promise((resolve) => {
-    request = indexedDB.open(Stores.Plants, version);
+    const request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      db = request.result;
+      const db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
       store.add(data);
@@ -55,11 +52,10 @@ export function addData<T>(
 
 export function getData<T>(storeName: Stores): Promise<T[]> {
   return new Promise((resolve) => {
-    request = indexedDB.open(Stores.Plants, version);
+    const request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      if (request.readyState !== "done") return;
-      db = request.result;
+      const db = request.result;
       const tx = db.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);
       const res = store.getAll();
@@ -72,10 +68,10 @@ export function getData<T>(storeName: Stores): Promise<T[]> {
 
 export function deleteData(storeName: Stores, key: string): Promise<boolean> {
   return new Promise((resolve) => {
-    request = indexedDB.open(Stores.Plants, version);
+    const request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      db = request.result;
+      const db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
       const res = store.delete(key);
@@ -96,10 +92,10 @@ export function updateData<T>(
   data: T,
 ): Promise<T | string | null> {
   return new Promise((resolve) => {
-    request = indexedDB.open(Stores.Plants, version);
+    const request = indexedDB.open(Stores.Plants, version);
 
     request.onsuccess = () => {
-      db = request.result;
+      const db = request.result;
       const tx = db.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
       store.put(data);
