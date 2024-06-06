@@ -43,11 +43,25 @@ function App() {
       .catch(logError);
   };
 
+  const handleExport = async () => {
+    const plants = await getData<Plant>(Stores.Plants);
+    const data = JSON.stringify(plants, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "plants.json";
+    a.click();
+  };
+
   return (
     <>
       <nav className="justify-end flex p-4">
         <Button onClick={handleGetAll} variant="ghost">
           Refresh
+        </Button>
+        <Button onClick={handleExport} variant="ghost">
+          Export
         </Button>
       </nav>
       <main className="container pb-4">
