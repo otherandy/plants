@@ -15,10 +15,12 @@ import {
 
 export default function DatePicker({
   date,
+  id,
   disabled,
   onSelect,
 }: {
   date: Date;
+  id?: string;
   disabled?: Matcher | Matcher[] | undefined;
   onSelect?: (date: Date) => void;
 }) {
@@ -26,6 +28,7 @@ export default function DatePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          id={id}
           variant={"outline"}
           className={cn(
             "justify-start text-left font-normal",

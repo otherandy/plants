@@ -149,43 +149,8 @@ function PlantCard({
             handleUpdate(plant);
           }}
         />
-        <div className="my-4 flex-col flex gap-2">
-          <p>
-            Last watered{" "}
-            <DatePicker
-              date={plant.last_watered_at}
-              disabled={{ after: new Date() }}
-              onSelect={(date: Date) => {
-                plant.last_watered_at = date;
-                handleUpdate(plant);
-              }}
-            />
-          </p>
-          <p>
-            Water every{" "}
-            <Select
-              onValueChange={(value) => {
-                plant.period = parseInt(value);
-                handleUpdate(plant);
-              }}
-            >
-              <SelectTrigger className="w-[4rem] inline-flex">
-                <SelectValue placeholder={plant.period} />
-              </SelectTrigger>
-              <SelectContent>
-                {[1, 2, 3, 5, 7, 10, 14, 15, 30].map((days) => (
-                  <SelectItem
-                    key={plant.id + "sp" + days}
-                    value={days.toString()}
-                  >
-                    {days}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>{" "}
-            days
-          </p>
-          <div className="grid w-full gap-1.5 pt-2">
+        <div className="my-4 flex-col flex gap-3">
+          <div className="grid gap-1.5">
             <Label htmlFor={plant.id + "c"}>Comments</Label>
             <Textarea
               id={plant.id + "c"}
@@ -196,6 +161,46 @@ function PlantCard({
                 handleUpdate(plant);
               }}
             />
+          </div>
+          <div className="flex gap-3 justify-between flex-col md:flex-row">
+            <div className="grid gap-1.5">
+              <Label htmlFor={plant.id + "dp"}>Last watered</Label>
+              <DatePicker
+                id={plant.id + "dp"}
+                date={plant.last_watered_at}
+                disabled={{ after: new Date() }}
+                onSelect={(date: Date) => {
+                  plant.last_watered_at = date;
+                  handleUpdate(plant);
+                }}
+              />
+            </div>
+            <div className="grid gap-1.5">
+              <Label htmlFor={plant.id + "we"}>Water every</Label>
+              <div id={plant.id + "we"}>
+                <Select
+                  onValueChange={(value) => {
+                    plant.period = parseInt(value);
+                    handleUpdate(plant);
+                  }}
+                >
+                  <SelectTrigger className="w-[4rem] inline-flex">
+                    <SelectValue placeholder={plant.period} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[1, 2, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                      <SelectItem
+                        key={plant.id + "sp" + days}
+                        value={days.toString()}
+                      >
+                        {days}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <span> days</span>
+              </div>
+            </div>
           </div>
         </div>
         <Progress value={timer.normalized} />
