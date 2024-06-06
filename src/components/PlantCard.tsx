@@ -38,10 +38,52 @@ import {
 } from "@/components/ui/sheet";
 import { Delete, Droplet, /* Edit, */ Settings } from "lucide-react";
 
-interface Timer {
-  time: number;
+class Timer {
+  constructor(remaining = 0, normalized = 0) {
+    this.remaining = remaining;
+    this.normalized = normalized;
+  }
+
+  remaining: number;
   normalized: number;
-  days: number;
+
+  toDate() {
+    return new Date(Date.now() + this.remaining);
+  }
+}
+
+function toDayName(day: number) {
+  switch (day) {
+    case 0:
+      return "Sunday";
+    case 1:
+      return "Monday";
+    case 2:
+      return "Tuesday";
+    case 3:
+      return "Wednesday";
+    case 4:
+      return "Thursday";
+    case 5:
+      return "Friday";
+    case 6:
+      return "Saturday";
+  }
+}
+
+function whenToWater(timer: Timer) {
+  if (timer.remaining < 0) {
+    return "today";
+  }
+  const remainingHours = timer.remaining / 1000 / 60 / 60;
+  if (remainingHours < 24) {
+    return "tomorrow";
+  }
+  const remainingDays = remainingHours / 24;
+  if (remainingDays < 7) {
+    return "this " + toDayName(timer.toDate().getDay());
+  }
+  return "in " + Math.ceil(remainingHours / 24) + " days";
 }
 
 function PlantCard({
@@ -53,21 +95,15 @@ function PlantCard({
   handleUpdate: (plant: Plant) => void;
   handleDelete: (id: string) => void;
 }) {
-  const [timer, setTimer] = useState<Timer>({
-    time: 0,
-    normalized: 0,
-    days: 0,
-  });
+  const [timer, setTimer] = useState<Timer>(new Timer());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const period = plant.period * 24 * 60 * 60;
-      const next = new Date(plant.last_watered_at.getTime() + period * 1000);
+      const period = plant.period * 24 * 60 * 60 * 1000; // days to milliseconds
+      const next = new Date(plant.last_watered_at.getTime() + period);
       const remaining = next.getTime() - new Date().getTime();
-      const time = Math.floor(remaining / 1000);
-      const normalized = (time / period) * 100;
-      const days = time / (24 * 60 * 60);
-      setTimer({ time, normalized, days });
+      const normalized = (remaining / period) * 100;
+      setTimer(new Timer(remaining, normalized));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -131,7 +167,7 @@ function PlantCard({
                 <SelectValue placeholder={plant.period} />
               </SelectTrigger>
               <SelectContent>
-                {[1, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                {[1, 2, 3, 5, 7, 10, 14, 15, 30].map((days) => (
                   <SelectItem
                     key={plant.id + "sp" + days}
                     value={days.toString()}
@@ -161,31 +197,16 @@ function PlantCard({
       <CardFooter className="justify-between">
         <div className="items-center flex gap-2">
           <Button
+            variant="default"
+            size="icon"
             onClick={() => {
               plant.last_watered_at = new Date();
               handleUpdate(plant);
             }}
-            variant="default"
-            size="icon"
           >
             <Droplet />
           </Button>
-          <Badge
-            variant={
-              timer.days < 0.5
-                ? "destructive"
-                : timer.days <= 1
-                  ? "default"
-                  : "secondary"
-            }
-          >
-            Water{" "}
-            {timer.days < 0.5
-              ? "today"
-              : timer.days <= 1
-                ? "tomorrow"
-                : `in ${Math.ceil(timer.days)} days`}
-          </Badge>
+          <Badge variant="default">Water {whenToWater(timer)}</Badge>
         </div>
         <Sheet>
           <DropdownMenu>
