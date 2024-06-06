@@ -36,6 +36,12 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { Delete, Droplet, /* Edit, */ Settings } from "lucide-react";
 
 class Timer {
@@ -196,16 +202,23 @@ function PlantCard({
       </CardContent>
       <CardFooter className="justify-between">
         <div className="items-center flex gap-2">
-          <Button
-            variant="default"
-            size="icon"
-            onClick={() => {
-              plant.last_watered_at = new Date();
-              handleUpdate(plant);
-            }}
-          >
-            <Droplet />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="default"
+                  size="icon"
+                  onClick={() => {
+                    plant.last_watered_at = new Date();
+                    handleUpdate(plant);
+                  }}
+                >
+                  <Droplet />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Water now</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <Badge variant="default">Water {whenToWater(timer)}</Badge>
         </div>
         <Sheet>
