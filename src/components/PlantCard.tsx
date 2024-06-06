@@ -219,7 +219,19 @@ function PlantCard({
               <TooltipContent>Water now</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <Badge variant="default">Water {whenToWater(timer)}</Badge>
+          <Badge
+            variant={
+              whenToWater(timer) == "today"
+                ? "destructive"
+                : whenToWater(timer) == "tomorrow"
+                  ? "default"
+                  : whenToWater(timer).startsWith("this")
+                    ? "secondary"
+                    : "outline"
+            }
+          >
+            Water {whenToWater(timer)}
+          </Badge>
         </div>
         <Sheet>
           <DropdownMenu>
