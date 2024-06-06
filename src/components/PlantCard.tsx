@@ -112,7 +112,8 @@ function PlantCard({
             Last watered{" "}
             <DatePicker
               date={plant.last_watered_at}
-              handleUpdate={(date: Date) => {
+              disabled={{ after: new Date() }}
+              onSelect={(date: Date) => {
                 plant.last_watered_at = date;
                 handleUpdate(plant);
               }}
