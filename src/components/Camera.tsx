@@ -24,14 +24,14 @@ export default function Camera({
   }, [updateData]);
 
   return (
-    <div className="mt-auto flex flex-col gap-2 px-4 pt-2">
-      <AspectRatio ratio={4 / 3} className="bg-muted rounded-md">
+    <>
+      <AspectRatio ratio={4 / 3} className="bg-muted">
         <Webcam
           ref={webcamRef}
           disablePictureInPicture
           width={constraints.width}
           height={constraints.height}
-          className="rounded-md"
+          className="rounded-md max-h-full"
           screenshotFormat="image/jpeg"
           screenshotQuality={0.8}
           videoConstraints={constraints}
@@ -41,6 +41,6 @@ export default function Camera({
       <Button onClick={capture}>
         <CameraIcon />
       </Button>
-    </div>
+    </>
   );
 }

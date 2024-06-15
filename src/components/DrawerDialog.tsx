@@ -21,50 +21,111 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-export function DrawerDialog({
-  trigger,
-  title,
-  description,
-  children,
-}: {
-  trigger: React.ReactNode;
-  title?: string;
-  description?: string;
-  children: React.ReactNode;
-}) {
+const mediaQuery = "(min-width: 640px)";
+
+function DrawerDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery(mediaQuery);
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
-          </DialogHeader>
-          {children}
-        </DialogContent>
+        {children}
       </Dialog>
     );
   }
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription>{description}</DrawerDescription>
-        </DrawerHeader>
-        {children}
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
+      {children}
     </Drawer>
   );
 }
+
+const DrawerDialogTrigger = ({ children }: { children: React.ReactNode }) => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return <DialogTrigger asChild>{children}</DialogTrigger>;
+  }
+
+  return <DrawerTrigger asChild>{children}</DrawerTrigger>;
+};
+DrawerDialog.Trigger = DrawerDialogTrigger;
+
+const DrawerDialogContent = ({ children }: { children: React.ReactNode }) => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return (
+      <DialogContent className="sm:max-w-[425px]">{children}</DialogContent>
+    );
+  }
+
+  return <DrawerContent>{children}</DrawerContent>;
+};
+DrawerDialog.Content = DrawerDialogContent;
+
+const DrawerDialogHeader = ({ children }: { children: React.ReactNode }) => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return <DialogHeader>{children}</DialogHeader>;
+  }
+
+  return <DrawerHeader className="text-left"></DrawerHeader>;
+};
+DrawerDialog.Header = DrawerDialogHeader;
+
+const DrawerDialogTitle = ({ children }: { children: React.ReactNode }) => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return <DialogTitle>{children}</DialogTitle>;
+  }
+
+  return <DrawerTitle>{children}</DrawerTitle>;
+};
+DrawerDialog.Title = DrawerDialogTitle;
+
+const DrawerDialogDescription = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return <DialogDescription>{children}</DialogDescription>;
+  }
+
+  return <DrawerDescription>{children}</DrawerDescription>;
+};
+DrawerDialog.Description = DrawerDialogDescription;
+
+const DrawerDialogFooter = () => {
+  const isDesktop = useMediaQuery(mediaQuery);
+
+  if (isDesktop) {
+    return <></>;
+  }
+
+  return (
+    <DrawerFooter className="pt-2">
+      <DrawerClose asChild>
+        <Button variant="outline">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  );
+};
+DrawerDialog.Footer = DrawerDialogFooter;
+
+export {
+  DrawerDialog,
+  DrawerDialogTrigger,
+  DrawerDialogContent,
+  DrawerDialogHeader,
+  DrawerDialogTitle,
+  DrawerDialogDescription,
+  DrawerDialogFooter,
+};

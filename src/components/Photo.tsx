@@ -1,5 +1,11 @@
-import Camera from "@/components/Camera";
-import { DrawerDialog } from "@/components/DrawerDialog";
+import {
+  DrawerDialog,
+  DrawerDialogTrigger,
+  DrawerDialogContent,
+  DrawerDialogHeader,
+  DrawerDialogTitle,
+  DrawerDialogFooter,
+} from "@/components/DrawerDialog";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -9,6 +15,7 @@ import {
   ContextMenuItem,
 } from "@/components/ui/context-menu";
 import { CameraIcon, Trash } from "lucide-react";
+// import Camera from "@/components/Camera";
 
 export default function Photo({
   photo,
@@ -32,15 +39,21 @@ export default function Photo({
           </ContextMenuContent>
         </ContextMenu>
       ) : (
-        <DrawerDialog
-          title="Take a photo"
-          trigger={
-            <Button variant="outline" className="aspect-square h-full w-full">
+        <DrawerDialog>
+          <DrawerDialogTrigger>
+            <Button variant="outline" className="h-full w-full">
               <CameraIcon />
             </Button>
-          }
-        >
-          <Camera updateData={handleUpdate} />
+          </DrawerDialogTrigger>
+          <DrawerDialogContent>
+            <DrawerDialogHeader>
+              <DrawerDialogTitle>Upload Photo</DrawerDialogTitle>
+            </DrawerDialogHeader>
+            <div className="mt-auto flex flex-col gap-2 px-4 pt-2">
+              {/* <Camera /> */}
+            </div>
+            <DrawerDialogFooter />
+          </DrawerDialogContent>
         </DrawerDialog>
       )}
     </AspectRatio>
