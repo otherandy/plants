@@ -6,8 +6,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { CameraIcon } from "lucide-react";
 
 const constraints = {
-  width: 960,
-  height: 720,
+  width: 640,
+  height: 480,
   facingMode: "environment",
 };
 
@@ -25,7 +25,7 @@ export default function Camera({
 
   return (
     <>
-      <AspectRatio ratio={4 / 3} className="bg-muted">
+      <AspectRatio ratio={4 / 3}>
         <Webcam
           ref={webcamRef}
           disablePictureInPicture
