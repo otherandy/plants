@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/context-menu";
 import { CameraIcon, Trash } from "lucide-react";
 // import Camera from "@/components/Camera";
+import FileUpload from "@/components/FileUpload";
 
 export default function Photo({
   photo,
@@ -29,7 +30,13 @@ export default function Photo({
       {photo ? (
         <ContextMenu>
           <ContextMenuTrigger>
-            <img src={photo} alt="Plant" className="object-cover rounded-md" />
+            <img
+              src={photo}
+              alt="Plant"
+              height={640}
+              width={480}
+              className="object-cover rounded-md"
+            />
           </ContextMenuTrigger>
           <ContextMenuContent>
             <ContextMenuItem onClick={() => handleUpdate("")}>
@@ -49,8 +56,9 @@ export default function Photo({
             <DrawerDialogHeader>
               <DrawerDialogTitle>Upload Photo</DrawerDialogTitle>
             </DrawerDialogHeader>
-            <div className="mt-auto flex flex-col gap-2 px-4 pt-2">
+            <div className="mt-auto flex flex-col gap-2 px-4 pt-2 md:px-0">
               {/* <Camera /> */}
+              <FileUpload updateData={handleUpdate} />
             </div>
             <DrawerDialogFooter />
           </DrawerDialogContent>
