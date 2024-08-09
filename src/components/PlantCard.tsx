@@ -92,6 +92,19 @@ function whenToWater(timer: Timer) {
   return "in " + Math.ceil(remainingHours / 24) + " days";
 }
 
+function whenVariant(timer: Timer) {
+  const when = whenToWater(timer);
+
+  if (when == "today") {
+    return "destructive";
+  } else if (when == "tomorrow") {
+    return "default";
+  } else if (when.startsWith("this")) {
+    return "secondary";
+  }
+  return "outline";
+}
+
 function PlantCard({
   plant,
   handleUpdate,
@@ -116,7 +129,7 @@ function PlantCard({
   }, [plant]);
 
   return (
-    <Card className="aspect-square">
+    <Card>
       <CardHeader>
         <CardTitle>
           <input
@@ -224,19 +237,7 @@ function PlantCard({
               <TooltipContent>Water now</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <Badge
-            variant={
-              whenToWater(timer) == "today"
-                ? "destructive"
-                : whenToWater(timer) == "tomorrow"
-                  ? "default"
-                  : whenToWater(timer).startsWith("this")
-                    ? "secondary"
-                    : "outline"
-            }
-          >
-            Water {whenToWater(timer)}
-          </Badge>
+          <Badge variant={whenVariant(timer)}>Water {whenToWater(timer)}</Badge>
         </div>
         <Sheet>
           <DropdownMenu>
