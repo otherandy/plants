@@ -222,18 +222,19 @@ function PlantCard({
         <div className="items-center flex gap-2">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  variant="default"
-                  size="icon"
-                  onClick={() => {
-                    plant.last_watered_at = new Date();
-                    handleUpdate(plant);
-                  }}
-                >
+              <Button
+                variant="default"
+                size="icon"
+                asChild
+                onClick={() => {
+                  plant.last_watered_at = new Date();
+                  handleUpdate(plant);
+                }}
+              >
+                <TooltipTrigger>
                   <Droplet />
-                </Button>
-              </TooltipTrigger>
+                </TooltipTrigger>
+              </Button>
               <TooltipContent>Water now</TooltipContent>
             </Tooltip>
           </TooltipProvider>
