@@ -130,146 +130,193 @@ function PlantCard({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>
-          <input
-            value={plant.name}
-            placeholder="Name"
-            className="w-full"
-            onChange={(e) => {
-              plant.name = e.target.value;
-              handleUpdate(plant);
-            }}
-          />
-        </CardTitle>
-        <CardDescription>
-          <input
-            value={plant.description}
-            placeholder="Description"
-            className="placeholder:italic w-full"
-            onChange={(e) => {
-              plant.description = e.target.value;
-              handleUpdate(plant);
-            }}
-          />
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Photo
-          photo={plant.photo}
-          handleUpdate={(photo: string) => {
-            plant.photo = photo;
+      <Header plant={plant} handleUpdate={handleUpdate} />
+      <Content plant={plant} timer={timer} handleUpdate={handleUpdate} />
+      <Footer
+        plant={plant}
+        timer={timer}
+        handleUpdate={handleUpdate}
+        handleDelete={handleDelete}
+      />
+    </Card>
+  );
+}
+
+function Header({
+  plant,
+  handleUpdate,
+}: {
+  plant: Plant;
+  handleUpdate: (plant: Plant) => void;
+}) {
+  return (
+    <CardHeader>
+      <CardTitle>
+        <input
+          value={plant.name}
+          placeholder="Name"
+          className="w-full"
+          onChange={(e) => {
+            plant.name = e.target.value;
             handleUpdate(plant);
           }}
         />
-        <div className="my-4 flex-col flex gap-3">
+      </CardTitle>
+      <CardDescription>
+        <input
+          value={plant.description}
+          placeholder="Description"
+          className="placeholder:italic w-full"
+          onChange={(e) => {
+            plant.description = e.target.value;
+            handleUpdate(plant);
+          }}
+        />
+      </CardDescription>
+    </CardHeader>
+  );
+}
+
+function Content({
+  plant,
+  timer,
+  handleUpdate,
+}: {
+  plant: Plant;
+  timer: Timer;
+  handleUpdate: (plant: Plant) => void;
+}) {
+  return (
+    <CardContent>
+      <Photo
+        photo={plant.photo}
+        handleUpdate={(photo: string) => {
+          plant.photo = photo;
+          handleUpdate(plant);
+        }}
+      />
+      <div className="my-4 flex-col flex gap-3">
+        <div className="grid gap-1.5">
+          <Label htmlFor={plant.id + "c"}>Comments</Label>
+          <Textarea
+            id={plant.id + "c"}
+            placeholder="Type additional info here."
+            value={plant.comments}
+            onChange={(e) => {
+              plant.comments = e.target.value;
+              handleUpdate(plant);
+            }}
+          />
+        </div>
+        <div className="flex gap-3 justify-between flex-col md:flex-row">
           <div className="grid gap-1.5">
-            <Label htmlFor={plant.id + "c"}>Comments</Label>
-            <Textarea
-              id={plant.id + "c"}
-              placeholder="Type additional info here."
-              value={plant.comments}
-              onChange={(e) => {
-                plant.comments = e.target.value;
+            <Label htmlFor={plant.id + "dp"}>Last watered</Label>
+            <DatePicker
+              id={plant.id + "dp"}
+              date={plant.last_watered_at}
+              disabled={{ after: new Date() }}
+              onSelect={(date: Date) => {
+                plant.last_watered_at = date;
                 handleUpdate(plant);
               }}
             />
           </div>
-          <div className="flex gap-3 justify-between flex-col md:flex-row">
-            <div className="grid gap-1.5">
-              <Label htmlFor={plant.id + "dp"}>Last watered</Label>
-              <DatePicker
-                id={plant.id + "dp"}
-                date={plant.last_watered_at}
-                disabled={{ after: new Date() }}
-                onSelect={(date: Date) => {
-                  plant.last_watered_at = date;
-                  handleUpdate(plant);
-                }}
-              />
-            </div>
-            <div className="grid gap-1.5">
-              <Label htmlFor={plant.id + "we"}>Water every</Label>
-              <div id={plant.id + "we"}>
-                <Select
-                  onValueChange={(value) => {
-                    plant.period = parseInt(value);
-                    handleUpdate(plant);
-                  }}
-                >
-                  <SelectTrigger className="w-[4rem] inline-flex">
-                    <SelectValue placeholder={plant.period} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[1, 2, 3, 5, 7, 10, 14, 15, 30].map((days) => (
-                      <SelectItem
-                        key={plant.id + "sp" + days}
-                        value={days.toString()}
-                      >
-                        {days}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <span> days</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Progress value={timer.normalized} />
-      </CardContent>
-      <CardFooter className="justify-between">
-        <div className="items-center flex gap-2">
-          <TooltipProvider>
-            <Tooltip>
-              <Button
-                variant="default"
-                size="icon"
-                asChild
-                onClick={() => {
-                  plant.last_watered_at = new Date();
+          <div className="grid gap-1.5">
+            <Label htmlFor={plant.id + "we"}>Water every</Label>
+            <div id={plant.id + "we"}>
+              <Select
+                onValueChange={(value) => {
+                  plant.period = parseInt(value);
                   handleUpdate(plant);
                 }}
               >
-                <TooltipTrigger>
-                  <Droplet />
-                </TooltipTrigger>
-              </Button>
-              <TooltipContent>Water now</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <Badge variant={whenVariant(timer)}>Water {whenToWater(timer)}</Badge>
+                <SelectTrigger className="w-[4rem] inline-flex">
+                  <SelectValue placeholder={plant.period} />
+                </SelectTrigger>
+                <SelectContent>
+                  {[1, 2, 3, 5, 7, 10, 14, 15, 30].map((days) => (
+                    <SelectItem
+                      key={plant.id + "sp" + days}
+                      value={days.toString()}
+                    >
+                      {days}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <span> days</span>
+            </div>
+          </div>
         </div>
-        <Sheet>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <Settings />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {/* <SheetTrigger disabled>
-                <DropdownMenuItem disabled>
-                  <Edit className="mr-2 h-4 w-4" />
-                  <span>Edit</span>
-                </DropdownMenuItem>
-              </SheetTrigger> */}
-              <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
-                <Delete className="mr-2 h-4 w-4" />
-                <span>Delete</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Edit</SheetTitle>
-            </SheetHeader>
-            <div></div>
-            <SheetFooter></SheetFooter>
-          </SheetContent>
-        </Sheet>
-      </CardFooter>
-    </Card>
+      </div>
+      <Progress value={timer.normalized} />
+    </CardContent>
+  );
+}
+
+function Footer({
+  plant,
+  timer,
+  handleUpdate,
+  handleDelete,
+}: {
+  plant: Plant;
+  timer: Timer;
+  handleUpdate: (plant: Plant) => void;
+  handleDelete: (id: string) => void;
+}) {
+  return (
+    <CardFooter className="justify-between">
+      <div className="items-center flex gap-2">
+        <TooltipProvider>
+          <Tooltip>
+            <Button
+              variant="default"
+              size="icon"
+              asChild
+              onClick={() => {
+                plant.last_watered_at = new Date();
+                handleUpdate(plant);
+              }}
+            >
+              <TooltipTrigger>
+                <Droplet />
+              </TooltipTrigger>
+            </Button>
+            <TooltipContent>Water now</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <Badge variant={whenVariant(timer)}>Water {whenToWater(timer)}</Badge>
+      </div>
+      <Sheet>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Settings />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {/* <SheetTrigger disabled>
+            <DropdownMenuItem disabled>
+              <Edit className="mr-2 h-4 w-4" />
+              <span>Edit</span>
+            </DropdownMenuItem>
+          </SheetTrigger> */}
+            <DropdownMenuItem onClick={() => handleDelete(plant.id)}>
+              <Delete className="mr-2 h-4 w-4" />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Edit</SheetTitle>
+          </SheetHeader>
+          <div></div>
+          <SheetFooter></SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </CardFooter>
   );
 }
 
