@@ -46,7 +46,7 @@ export default function Photo({
           </ContextMenuContent>
         </ContextMenu>
       ) : (
-        <DrawerDialog>
+        <DrawerDialog drawerProps={{ dismissible: false }}>
           <DrawerDialogTrigger>
             <Button variant="outline" className="h-full w-full">
               <CameraIcon />

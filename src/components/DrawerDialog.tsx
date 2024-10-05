@@ -23,20 +23,28 @@ import {
 
 const mediaQuery = "(min-width: 640px)";
 
-function DrawerDialog({ children }: { children: React.ReactNode }) {
+function DrawerDialog({
+  dialogProps,
+  drawerProps,
+  children,
+}: {
+  dialogProps?: React.ComponentProps<typeof Dialog>;
+  drawerProps?: React.ComponentProps<typeof Drawer>;
+  children: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery(mediaQuery);
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={setOpen} {...dialogProps}>
         {children}
       </Dialog>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={setOpen} {...drawerProps}>
       {children}
     </Drawer>
   );

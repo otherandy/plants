@@ -91,7 +91,9 @@ export default function ImageCrop({
       >
         <img ref={imgRef} src={src} onLoad={onImageLoad} />
       </ReactCrop>
-      <Button onClick={finishCrop}>Save</Button>
+      <Button onClick={finishCrop} className="w-full">
+        Save
+      </Button>
     </div>
   );
 }
